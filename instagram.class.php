@@ -268,6 +268,38 @@ class Instagram {
   }
 
   /**
+   * Get recently tagged media, limited by min and max id
+   *
+   * @param string $name                  Valid tag name
+   * @param int $mindId                   Minimum id to return
+   * @param in $maxId                     Maximum id to return
+   * @return mixed
+   */
+  public function getPaginatedTagMedia($name, $count, $minId, $maxId) {
+    if (!$minId && !$maxId && !$count) {
+      return $this->getTagMedia($name);
+    }
+    else {
+
+      $params = array();
+
+      if ($count) {
+        $params['count'] = $count;
+      }
+
+      if ($minId) {
+        $params['min_tag_id'] = $minId;
+      }
+
+      if ($maxId) {
+        $params['max_tag_id'] = $maxId;
+      }
+
+      return $this->_makeCall('tags/' . $name . '/media/recent', false, $params);
+    }
+  }
+
+  /**
    * Get a list of users who have liked this media
    *
    * @param integer $id                   Instagram media id
